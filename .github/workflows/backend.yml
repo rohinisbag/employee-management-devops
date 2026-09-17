@@ -1,0 +1,90 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        working-directory: backend
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        working-directory: backend
+        run: pytest
+
+
+  deploy:
+
+    needs: test
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_GITHUB_ACTIONS_ROLE }}
+          aws-region: ap-south-1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build Lambda package
+        working-directory: backend
+        run: |
+          rm -rf package lambda.zip
+
+          mkdir package
+
+          pip install \
+            -r requirements.txt \
+            -t package/
+
+          cp app.py package/
+
+          cd package
+
+          zip -r ../lambda.zip .
+
+      - name: Deploy Lambda
+        working-directory: backend
+        run: |
+          aws lambda update-function-code \
+            --function-name employee-app-dev-api \
+            --zip-file fileb://lambda.zip
+
+      - name: Wait for Lambda
+        run: |
+          aws lambda wait function-updated \
+            --function-name employee-app-dev-api
