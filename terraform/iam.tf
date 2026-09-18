@@ -32,7 +32,7 @@ resource "aws_iam_role_policy" "rds_proxy" {
           "secretsmanager:GetSecretValue"
         ]
 
-        Resource = aws_db_instance.postgres.master_user_secret[0].secret_arn
+        Resource = aws_db_instance.main.master_user_secret[0].secret_arn
       }
     ]
   })

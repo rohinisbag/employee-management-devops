@@ -6,7 +6,7 @@ resource "aws_db_proxy" "main" {
   auth {
     auth_scheme = "SECRETS"
 
-    secret_arn = aws_db_instance.postgres.master_user_secret[0].secret_arn
+    secret_arn = aws_db_instance.main.master_user_secret[0].secret_arn
 
     iam_auth = "DISABLED"
   }
@@ -31,5 +31,5 @@ resource "aws_db_proxy_default_target_group" "main" {
 resource "aws_db_proxy_target" "main" {
   db_proxy_name          = aws_db_proxy.main.name
   target_group_name      = aws_db_proxy_default_target_group.main.name
-  db_instance_identifier = aws_db_instance.postgres.master_user_secret[0].secret_arn
+  db_instance_identifier = aws_db_instance.main.identifier
 }
