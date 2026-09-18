@@ -12,6 +12,8 @@ on:
     paths:
       - "terraform/**"
       - ".github/workflows/terraform.yml/"
+      - ".github/terraform.yml"
+      - ".github/actions/terraform.yml"
 
 permissions:
   id-token: write
