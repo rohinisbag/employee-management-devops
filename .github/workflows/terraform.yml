@@ -42,6 +42,9 @@ jobs:
           role-to-assume: arn:aws:iam::767397764201:role/devops-deployment-role
           aws-region: ap-south-1
 
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
       - name: Terraform Init
         run: terraform init
 
