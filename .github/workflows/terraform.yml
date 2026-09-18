@@ -40,11 +40,8 @@ jobs:
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::767397764201:role/devops-deployment-role
-          role-session-name: GitHubActions
-          #aws-region: ap-south-1
-          aws-access-key-id: ${{ secrets.AKIA3FLDYTRU42GLR5TA }}
-          aws-secret-access-key: ${{ secrets.B0RPSAQB+m0N0S8HZflqygqIv+EctANvf3KoBb3K }}
+          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY_ID }}
           aws-region: ap-south-1
 
       - name: Verify AWS identity
