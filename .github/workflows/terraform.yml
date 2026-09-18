@@ -36,7 +36,7 @@ jobs:
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_GITHUB_ACTIONS_ROLE }}
+          role-to-assume: arn:aws:iam::767397764201:role/devops-deployment-role
           aws-region: ap-south-1
 
       - name: Terraform Init
