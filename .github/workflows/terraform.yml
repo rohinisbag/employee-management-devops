@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - "terraform/**"
+        
 
   push:
     branches:
       - main
     paths:
       - "terraform/**"
+      - ".github/workflows/terraform.yml/"
 
 permissions:
   id-token: write
